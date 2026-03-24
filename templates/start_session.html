@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Start Reading Session</h2>
+
+<form id="sessionForm" method="POST">
+    {% csrf_token %}
+    
+    <label>Book Name:</label><br>
+    <input type="text" name="book" placeholder="Enter book name" required><br><br>
+
+    <label>Duration (minutes):</label><br>
+    <input type="number" name="duration" id="duration" placeholder="e.g. 30" required><br><br>
+
+    <label>Break Time:</label><br>
+    <select name="break">
+        <option value="10">2 minutes</option>
+        <option value="10">10 minutes</option>
+        <option value="15">15 minutes</option>
+        <option value="30">30 minutes</option>
+    </select><br><br>
+
+    <!-- Start Timer Button -->
+    <button type="button" onclick="startTimer()">Start Session</button>
+
+</form>
+
+<hr>
+
+<h3 id="timer" style="color:blue;"></h3>
+
+<script>
+let studyTimer;
+let breakTimer;
+
+function startTimer() {
+    let minutes = document.getElementById("duration").value;
+    let breakTime = document.querySelector("select[name='break']").value;
+
+    if (!minutes || minutes <= 0) {
+        alert("Enter valid study time");
+        return;
+    }
+
+    let time = minutes * 60;
+    let timerDisplay = document.getElementById("timer");
+
+    studyTimer = setInterval(() => {
+
+        let mins = Math.floor(time / 60);
+        let secs = time % 60;
+
+        timerDisplay.innerHTML = "📚 Study Time: " + mins + "m " + secs + "s";
+
+        if (time === 0) {
+            clearInterval(studyTimer);
+
+            alert("⏸ Study session complete! Time for a break.");
+
+            startBreakTimer(breakTime);
+        }
+
+        time--;
+
+    }, 1000);
+}
+
+
+function startBreakTimer(breakMinutes) {
+    let time = breakMinutes * 60;
+    let timerDisplay = document.getElementById("timer");
+
+    breakTimer = setInterval(() => {
+
+        let mins = Math.floor(time / 60);
+        let secs = time % 60;
+
+        timerDisplay.innerHTML = "☕ Break Time: " + mins + "m " + secs + "s";
+
+        if (time === 0) {
+            clearInterval(breakTimer);
+
+            alert("✅ Break over! Resume your reading.");
+
+            // Option 1: Manual resume
+            // Option 2: Auto-submit session
+            document.getElementById("sessionForm").submit();
+        }
+
+        time--;
+
+    }, 1000);
+}
+</script>
+
+{% endblock %}
