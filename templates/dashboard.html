@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<p>Total Sessions: {{ total }}</p>
+<p>Completed Sessions: {{ completed }}</p>
+
+<h3>Sessions</h3>
+<ul>
+{% for s in sessions %}
+    <li>{{ s.book_title }} - {{ s.duration }} mins</li>
+{% endfor %}
+</ul>
+
+<h3>Notes</h3>
+<ul>
+{% for note in notes %}
+    <li>
+        {{ note.content }}
+
+        <form action="/delete_note/{{ note.id }}/" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

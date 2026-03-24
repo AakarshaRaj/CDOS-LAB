@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Focused Reading</title>
+    <style type="text/css">
+        body {
+    font-family: Arial;
+    background: #f4f4f4;
+    padding: 20px;
+}
+
+nav a {
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+button {
+    background: green;
+    color: white;
+    padding: 8px;
+}
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/dashboard/">Dashboard</a>
+    <a href="/start/">Start Session</a>
+    <a href="/logout/">Logout</a>
+</nav>
+
+<hr>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
